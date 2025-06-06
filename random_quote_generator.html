@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Random Quote Generator</title>
+  <style>
+    /* Reset some default styles */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      max-width: 600px;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0 0 10px;
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #c4c4c4;
+      margin-bottom: 30px;
+    }
+    .quote-box {
+      margin-bottom: 30px;
+      min-height: 140px;
+    }
+    .quote-text {
+      font-size: 1.6rem;
+      line-height: 1.4;
+      margin: 0 0 15px;
+      font-style: italic;
+      position: relative;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    .quote-author {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #a1a1a1;
+      margin: 0;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    .btn {
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+    #new-quote-btn {
+      background-color: #38b6ff;
+      color: #fff;
+      box-shadow: 0 5px 15px rgba(56, 182, 255, 0.4);
+    }
+    #new-quote-btn:hover {
+      background-color: #2596d1;
+      box-shadow: 0 7px 20px rgba(37, 150, 209, 0.5);
+    }
+    .btn-twitter {
+      background-color: #1da1f2;
+      color: #fff;
+      box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
+    }
+    .btn-twitter:hover {
+      background-color: #0d8ddb;
+      box-shadow: 0 7px 20px rgba(13, 141, 219, 0.6);
+    }
+
+    /* Fade-in animation */
+    .fade-in {
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px 20px;
+      }
+      .header h1 {
+        font-size: 2rem;
+      }
+      .quote-text {
+        font-size: 1.3rem;
+      }
+      .quote-author {
+        font-size: 1rem;
+      }
+      .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Random Quote Generator</h1>
+      <p class="subtitle">Click the button for the quotes</p>
+    </div>
+
+    <div class="quote-box">
+      <p class="quote-text" id="quote-text">The only way to do great work is to love what you do.</p>
+      <p class="quote-author" id="quote-author">Steve Jobs</p>
+    </div>
+
+    <div class="buttons">
+      <button class="btn" id="new-quote-btn">New Quote</button>
+      <a href="#" class="btn btn-twitter" id="tweet-quote" target="_blank" rel="noopener">Tweet</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const quoteText = document.getElementById('quote-text');
+      const quoteAuthor = document.getElementById('quote-author');
+      const newQuoteBtn = document.getElementById('new-quote-btn');
+      const tweetQuoteBtn = document.getElementById('tweet-quote');
+      const quotes = [
+        { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+        { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
+        { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+        { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+        { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
+        { text: "In the middle of difficulty lies opportunity.", author: "Albert Einstein" },
+        { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+        { text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+        { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+        { text: "You must be the change you wish to see in the world.", author: "Mahatma Gandhi" },
+        { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
+        { text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
+        { text: "Whether you think you can or you think you can't, you're right.", author: "Henry Ford" },
+        { text: "Your time is limited, so don't waste it living someone else's life.", author: "Steve Jobs" },
+        { text: "If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.", author: "Oprah Winfrey" }
+      ];
+
+      function getRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        return quotes[randomIndex];
+      }
+
+      function displayNewQuote() {
+        quoteText.classList.remove('fade-in');
+        quoteAuthor.classList.remove('fade-in');
+        void quoteText.offsetWidth; // Trigger reflow for restart animation
+        void quoteAuthor.offsetWidth;
+
+        const quote = getRandomQuote();
+
+        quoteText.textContent = quote.text;
+        quoteAuthor.textContent = quote.author;
+
+        quoteText.classList.add('fade-in');
+        quoteAuthor.classList.add('fade-in');
+
+        const tweetText = encodeURIComponent(`"${quote.text}" — ${quote.author}`);
+        tweetQuoteBtn.href = `https://twitter.com/intent/tweet?text=${tweetText}`;
+      }
+
+      newQuoteBtn.addEventListener('click', displayNewQuote);
+
+      displayNewQuote();
+    });
+  </script>
+</body>
+</html>
